@@ -5,6 +5,8 @@
 
 class vec {
 public:
+    constexpr static double eps = 1e-9;
+
     explicit vec(double x_ = 0, double y_ = 0) : x_(x_), y_(y_) {}
     vec& operator+=(const vec &ot);
     vec operator+(const vec &ot);
@@ -20,6 +22,7 @@ public:
     double y() { return y_; }
 
     static double dist(vec &a, vec &b);
+    static bool check_collision(vec a1, vec a2, vec b1, vec b2);
 
 private:
     double x_, y_;
