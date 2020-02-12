@@ -12,6 +12,8 @@ public:
     vec operator+(const vec &ot);
     vec& operator-=(const vec &ot);
     vec operator-(const vec &ot);
+    vec operator*(double a);
+    vec operator/(double a);
     //scalar product
     double operator*(const vec &ot);
     //cross product
@@ -20,10 +22,12 @@ public:
     friend std::ostream& operator<<(std::ostream &os, vec &a);
     double x() { return x_; }
     double y() { return y_; }
+    vec ortnorm();
+    vec norm();
+    double mod();
 
     static double dist(vec &a, vec &b);
     static bool check_collision(vec a1, vec a2, vec b1, vec b2);
-
 private:
     double x_, y_;
 };
