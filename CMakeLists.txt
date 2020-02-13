@@ -37,6 +37,6 @@ endif()
 
 include_directories(include/)
 
-add_executable(geom_test_task src/main.cpp src/vec.cpp include/vec.h)
+add_executable(geom_test_task src/main.cpp src/vec.cpp include/vec.h src/CutBuilder.cpp include/CutBuilder.h)
 
 add_subdirectory(tests)
