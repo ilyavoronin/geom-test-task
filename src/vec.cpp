@@ -22,19 +22,19 @@ vec vec::operator-(const vec &ot) {
     return vec(x_ - ot.x_, y_ - ot.y_);
 }
 
-vec vec::operator*(double a) {
+vec vec::operator*(long double a) {
     return vec(x_ * a, y_ * a);
 }
 
-vec vec::operator/(double a) {
+vec vec::operator/(long double a) {
     return vec(x_ / a, y_ / a);
 }
 
-double vec::operator*(const vec& ot) {
+long double vec::operator*(const vec& ot) {
     return x_ * ot.x_ + y_ * ot.y_;
 }
 
-double vec::operator%(const vec& ot) {
+long double vec::operator%(const vec& ot) {
     return x_ * ot.y_ - y_ * ot.x_;
 }
 
@@ -48,17 +48,17 @@ std::ostream& operator<<(std::ostream& os, vec &a) {
     return os;
 }
 
-double vec::dist(vec &a, vec &b) {
+long double vec::dist(vec &a, vec &b) {
     return sqrt((a.x_ - b.x_) * (a.x_ - b.x_) + (a.y_ - b.y_) * (a.y_ - b.y_));
 }
 
 bool vec::check_collision(vec a1, vec a2, vec b1, vec b2) {
     if (fabs((a2 - a1) % (b2 - b1)) < eps) {
         //they are on the same line
-        double x1 = std::min(a1.x_, a2.x_);
-        double x2 = std::max(a1.x_, a2.x_);
-        double x3 = std::min(b1.x_, b2.x_);
-        double x4 = std::max(b1.x_, b2.x_);
+        long double x1 = std::min(a1.x_, a2.x_);
+        long double x2 = std::max(a1.x_, a2.x_);
+        long double x3 = std::min(b1.x_, b2.x_);
+        long double x4 = std::max(b1.x_, b2.x_);
 
         //check if projection intersects
         return (x1 <= x3 && x3 <= x2) || (x1 <= x4 && x4 <= x2);
@@ -72,7 +72,7 @@ bool vec::check_collision(vec a1, vec a2, vec b1, vec b2) {
     }
 }
 
-double vec::mod() {
+long double vec::mod() {
     return sqrt(x_ * x_ + y_ * y_);
 }
 
@@ -85,8 +85,8 @@ vec vec::ortnorm() {
     return ort / ort.mod();
 }
 
-double vec::get_angle(vec a, vec b) {
-    double ang = atan2(a * b, a % b);
+long double vec::get_angle(vec a, vec b) {
+    long double ang = atan2(a * b, a % b);
     if (ang < 0) {
         ang += M_PI;
     }

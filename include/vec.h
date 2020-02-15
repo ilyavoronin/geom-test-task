@@ -5,32 +5,32 @@
 
 class vec {
 public:
-    constexpr static double eps = 1e-9;
+    constexpr static long double eps = 1e-9;
 
-    explicit vec(double x_ = 0, double y_ = 0) : x_(x_), y_(y_) {}
+    explicit vec(long double x_ = 0, long double y_ = 0) : x_(x_), y_(y_) {}
     vec& operator+=(const vec &ot);
     vec operator+(const vec &ot);
     vec& operator-=(const vec &ot);
     vec operator-(const vec &ot);
-    vec operator*(double a);
-    vec operator/(double a);
+    vec operator*(long double a);
+    vec operator/(long double a);
     //scalar product
-    double operator*(const vec &ot);
+    long double operator*(const vec &ot);
     //cross product
-    double operator%(const vec &ot);
+    long double operator%(const vec &ot);
     friend std::istream& operator>>(std::istream &is, vec &a);
     friend std::ostream& operator<<(std::ostream &os, vec &a);
-    double x() { return x_; }
-    double y() { return y_; }
+    long double x() { return x_; }
+    long double y() { return y_; }
     vec ortnorm();
     vec norm();
-    double mod();
+    long double mod();
 
-    static double dist(vec &a, vec &b);
+    static long double dist(vec &a, vec &b);
     static bool check_collision(vec a1, vec a2, vec b1, vec b2);
-    static double get_angle(vec a, vec b);
+    static long double get_angle(vec a, vec b);
 private:
-    double x_, y_;
+    long double x_, y_;
 };
 
 

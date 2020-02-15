@@ -7,10 +7,10 @@
 
 int main() {
     vec a, b, c;
-    double l;
+    long double l;
     std::cin >> a >> b >> c;
     std::cin >> l;
-    double side_size = (b - a).mod();
+    long double side_size = (b - a).mod();
     CutBuilder cutBuilder;
     if (fabs((b - c).mod() - side_size) < 0.1 && fabs((c - a).mod() - side_size) < 0.1) {
         if (!cutBuilder.check_equal(a, b, c, l)) {
