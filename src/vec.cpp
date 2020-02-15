@@ -86,7 +86,10 @@ vec vec::ortnorm() {
 }
 
 long double vec::get_angle(vec a, vec b) {
-    long double ang = atan2(a * b, a % b);
+    if (a % b < 0) {
+        std::swap(a, b);
+    }
+    long double ang = atan2(a % b, a * b);
     if (ang < 0) {
         ang += M_PI;
     }

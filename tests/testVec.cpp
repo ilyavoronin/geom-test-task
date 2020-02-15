@@ -63,3 +63,31 @@ TEST(VecTests, testCheckCollisionFalseClose) {
 
     ASSERT_EQ(vec::check_collision(a, b, c, d), false);
 }
+
+TEST(vecTests, testGetAngle1) {
+    vec v1(2, 5);
+    vec v2(4,7);
+
+    long double angle = vec::get_angle(v1, v2);
+
+    ASSERT_NEAR(angle, 0.138639737, vec::eps);
+}
+
+TEST(vecTests, testGetAngle2) {
+    vec v1(2, 5);
+    vec v2(4,7);
+
+    long double angle = vec::get_angle(v2, v1);
+
+    ASSERT_NEAR(angle, 0.138639737, vec::eps);
+}
+
+TEST(vecTests, testGetAngle3) {
+    vec v1(5, 1);
+    vec v2(-5,1);
+
+    long double angle = vec::get_angle(v1, v2);
+
+    ASSERT_NEAR(angle, 2.74680153359, vec::eps);
+}
+
