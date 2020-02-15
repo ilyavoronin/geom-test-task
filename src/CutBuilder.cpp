@@ -42,15 +42,52 @@ bool CutBuilder::check_any(vec a, vec b, vec c, double l, std::vector <vec> &poi
     vec vec_ab = (b - a).norm();
     vec vec_bc = (c - b).norm();
     vec vec_ca = (a - c).norm();
-    double step_ab = ((b - a).mod() - 3 * vec::eps) / ITER;
-    double step_bc = ((c - b).mod() - 3 * vec::eps) / ITER;
-    double step_ca = ((a - c).mod() - 3 * vec::eps) / ITER;
-    for (int n1 = 0; n1 < ITER; n1++) {
-        for (int n2 = 0; n2 < ITER; n2++) {
-            for (int n3 = 0; n3 < ITER; n3++) {
-                vec p_ab = a + vec_ab * (step_ab * (double)n1);
-                vec p_bc = b + vec_bc * (step_bc * (double)n2);
-                vec p_ca = c + vec_ca * (step_ca * (double)n3);
+    double angle_abc = atan2((a - b) * (c - b), (a - b) % (c - b));
+    double angle_bca = atan2((b - c) * (a - c), (b - c) % (a - c));
+    double angle_cab = atan2((c - a) * (b - a), (c - a) % (b - a));
+    double beg_ab, end_ab, beg_bc, end_bc, beg_ca, end_ca;
+
+    if (angle_cab < PI / 2) {
+        beg_ab = l / tan(angle_cab) + vec::eps;
+        end_ca = (c - a).mod() - beg_ab - vec::eps;
+    }
+    else {
+        beg_ab = 0 + vec::eps;
+        end_ca = (c - a).mod() - vec::eps;
+    }
+
+    if (angle_abc < PI / 2) {
+        beg_bc = l / tan(angle_abc) + vec::eps;
+        end_ab = (b - a).mod() - beg_bc - vec::eps;
+    }
+    else {
+        beg_bc = 0 + vec::eps;
+        end_ab = (b - a).mod();
+    }
+
+    if (angle_cab < PI / 2) {
+        beg_ca = l / tan(angle_cab) + vec::eps;
+        end_bc = (c - b).mod() - beg_ca - vec::eps;
+    }
+    else {
+        beg_ca = 0 + vec::eps;
+        end_bc = (c - b).mod() - vec::eps;
+    }
+    if (beg_ab > end_ab || beg_bc > end_bc || beg_ca > end_ca) {
+        return false;
+    }
+    double step_ab = (end_ab - beg_ab) / ITER;
+    double step_bc = (end_bc - beg_bc) / ITER;
+    double step_ca = (end_ca - beg_ca) / ITER;
+    vec point_beg_ab = a + (b - a).norm() * beg_ab;
+    vec point_beg_bc = b + (c - b).norm() * beg_bc;
+    vec point_beg_ca = c + (c - a).norm() * beg_ca;
+    for (int n1 = 0; n1 < ITER + 1; n1++) {
+        for (int n2 = 0; n2 < ITER + 1; n2++) {
+            for (int n3 = 0; n3 < ITER + 1; n3++) {
+                vec p_ab = point_beg_ab + vec_ab * (step_ab * (double)n1);
+                vec p_bc = point_beg_bc + vec_bc * (step_bc * (double)n2);
+                vec p_ca = point_beg_ca + vec_ca * (step_ca * (double)n3);
                 points = get_cuts(a, b, c, p_ab, p_bc, p_ca, l);
                 if (!vec::check_collision(points[0], points[1], points[2], points[3]) &&
                     !vec::check_collision(points[0], points[1], points[4], points[5]) &&

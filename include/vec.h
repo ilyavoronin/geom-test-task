@@ -28,6 +28,7 @@ public:
 
     static double dist(vec &a, vec &b);
     static bool check_collision(vec a1, vec a2, vec b1, vec b2);
+    static double get_angle(vec a, vec b);
 private:
     double x_, y_;
 };

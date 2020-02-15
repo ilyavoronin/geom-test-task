@@ -84,3 +84,11 @@ vec vec::ortnorm() {
     vec ort(-y_, x_);
     return ort / ort.mod();
 }
+
+double vec::get_angle(vec a, vec b) {
+    double ang = atan2(a * b, a % b);
+    if (ang < 0) {
+        ang += M_PI;
+    }
+    return ang;
+}
