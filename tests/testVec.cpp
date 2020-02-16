@@ -91,3 +91,5 @@ TEST(vecTests, testGetAngle3) {
     ASSERT_NEAR(angle, 2.74680153359, vec::eps);
 }
 
+
+

@@ -16,8 +16,8 @@ public:
 
 private:
     const long double PI = M_PI;
-    const int ITER = 200;
-    const int BIN_INTER = 30;
+    const int ITER = 100;
+    const int BIN_INTER = 5;
 };
 
 

@@ -44,9 +44,9 @@ bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec>
     vec vec_ab = (b - a).norm();
     vec vec_bc = (c - b).norm();
     vec vec_ca = (a - c).norm();
-    long double angle_abc = atan2((a - b) * (c - b), (a - b) % (c - b));
-    long double angle_bca = atan2((b - c) * (a - c), (b - c) % (a - c));
-    long double angle_cab = atan2((c - a) * (b - a), (c - a) % (b - a));
+    long double angle_abc = vec::get_angle((a - b), (c - b));
+    long double angle_bca = vec::get_angle((b - c), (a - c));
+    long double angle_cab = vec::get_angle((c - a), (b - a));
     long double beg_ab, end_ab, beg_bc, end_bc, beg_ca, end_ca;
 
     if (angle_cab < PI / 2) {
@@ -67,8 +67,8 @@ bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec>
         end_ab = (b - a).mod();
     }
 
-    if (angle_cab < PI / 2) {
-        beg_ca = l / tan(angle_cab) + vec::eps;
+    if (angle_bca < PI / 2) {
+        beg_ca = l / tan(angle_bca) + vec::eps;
         end_bc = (c - b).mod() - beg_ca - vec::eps;
     }
     else {
@@ -90,10 +90,11 @@ bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec>
                 vec p_ab = point_beg_ab + vec_ab * (step_ab * (long double)n1);
                 vec p_bc = point_beg_bc + vec_bc * (step_bc * (long double)n2);
                 vec p_ca = point_beg_ca + vec_ca * (step_ca * (long double)n3);
-                points = get_cuts(a, b, c, p_ab, p_bc, p_ca, l);
-                if (!vec::check_collision(points[0], points[1], points[2], points[3]) &&
-                    !vec::check_collision(points[0], points[1], points[4], points[5]) &&
-                    !vec::check_collision(points[2], points[3], points[4], points[5])) {
+                std::vector <vec> cuts = get_cuts(a, b, c, p_ab, p_bc, p_ca, l);
+                if (!vec::check_collision(cuts[0], cuts[1], cuts[2], cuts[3]) &&
+                    !vec::check_collision(cuts[0], cuts[1], cuts[4], cuts[5]) &&
+                    !vec::check_collision(cuts[2], cuts[3], cuts[4], cuts[5])) {
+                    points = {p_ab, p_bc, p_ca};
                     return true;
                 }
             }
@@ -119,5 +120,6 @@ std::vector <vec> CutBuilder::find_sol_any(vec a, vec b, vec c, long double l) {
         }
     }
     check_any(a, b, c, le, points);
+    points = get_cuts(a, b, c, points[0], points[1], points[2], l);
     return points;
 }
