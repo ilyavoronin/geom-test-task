@@ -69,7 +69,7 @@ TEST(CutBuilderEqual, testFindSolution1) {
     vec a(-7.45, 1.12);
     vec b(-3.13, -2.14);
     vec c = gen_equal_triangle(a, b);
-    long double l = 0.1;
+    long double l = 2;
 
     std::vector <vec> p = CutBuilder().find_sol_equal(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -96,7 +96,7 @@ TEST(CutBuilderAny, testFindSolutionAllAnglesAcuse1) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -111,7 +111,7 @@ TEST(CutBuilderAny, testFindSolutionAllAnglesAcuse2) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -126,7 +126,7 @@ TEST(CutBuilderAny, testFindSolutionObtuseB) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -141,7 +141,7 @@ TEST(CutBuilderAny, testFindSolutionObtuseA) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -157,7 +157,7 @@ TEST(CutBuilderAny, testFindSolutionObtuseC) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -172,7 +172,7 @@ TEST(CutBuilderAny, testFindSolutionObtuseC2) {
     long double l = 4;
     std::vector <vec> p;
 
-    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p, true));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
     ASSERT_TRUE(check_size(p, l));
@@ -187,5 +187,5 @@ TEST(CutBuilderAny, testFindSolutionFalse) {
     long double l = 7;
     std::vector <vec> p;
 
-    ASSERT_FALSE(CutBuilder().check_any(a, b, c, l, p));
+    ASSERT_FALSE(CutBuilder().check_any(a, b, c, l, p, true));
 }

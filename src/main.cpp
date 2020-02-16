@@ -24,7 +24,7 @@ int main() {
     }
     else {
         std::vector <vec> ans;
-        if (!cutBuilder.check_any(a, b, c, l, ans)) {
+        if (!cutBuilder.check_any(a, b, c, l, ans, true)) {
             std::cout << "Impossible\n";
             return 0;
         }

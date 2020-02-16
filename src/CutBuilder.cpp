@@ -34,8 +34,13 @@ std::vector <vec> CutBuilder::get_cuts(vec a, vec b, vec c, vec p_ab, vec p_bc, 
     };
 }
 
+long double CutBuilder::metric1(long double dist_ab, long double dist_bc, long double dist_ca,
+                                long double mid_dist_ab, long double mid_dist_bc, long double mid_dist_ca) {
+    return (2 * mid_dist_ab / dist_ab) * (2 * mid_dist_bc / dist_bc) * (2 * mid_dist_ca / dist_ca);
+}
+
 //this function might be slow if ITER is too big
-bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec> &points) {
+bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec> &points, bool find_any) {
     vec vec_ab = (b - a).norm();
     vec vec_bc = (c - b).norm();
     vec vec_ca = (a - c).norm();
@@ -78,22 +83,55 @@ bool CutBuilder::check_any(vec a, vec b, vec c, long double l, std::vector <vec>
     long double step_ca = (end_ca - beg_ca) / ITER;
     vec point_beg_ab = a + (b - a).norm() * beg_ab;
     vec point_beg_bc = b + (c - b).norm() * beg_bc;
-    vec point_beg_ca = c + (c - a).norm() * beg_ca;
+    vec point_beg_ca = c + (a - c).norm() * beg_ca;
+    vec mid_ab = a + (b - a).norm() * (beg_ab + end_ab) / 2;
+    vec mid_bc = b + (c - b).norm() * (beg_bc + end_bc) / 2;
+    vec mid_ca = c + (a - c).norm() * (beg_ca + end_ca) / 2;
+    vec best_ab = a;
+    vec best_bc = b;
+    vec best_ca = c;
+    bool already_find = false;
+    long double best_metric = 1;
+    long double cur_metric;
     for (int n1 = 0; n1 < ITER + 1; n1++) {
         for (int n2 = 0; n2 < ITER + 1; n2++) {
             for (int n3 = 0; n3 < ITER + 1; n3++) {
                 vec p_ab = point_beg_ab + vec_ab * (step_ab * (long double)n1);
                 vec p_bc = point_beg_bc + vec_bc * (step_bc * (long double)n2);
                 vec p_ca = point_beg_ca + vec_ca * (step_ca * (long double)n3);
+                if (!find_any && already_find) {
+                    cur_metric = metric1((end_ab - beg_ab),
+                                         (end_bc - beg_bc),
+                                         (end_ca - beg_ca),
+                                         vec::dist(best_ab, mid_ab),
+                                         vec::dist(best_bc, mid_bc),
+                                         vec::dist(best_ca, mid_ca) );
+                    if (cur_metric > best_metric) {
+                        continue;
+                    }
+                }
                 std::vector <vec> cuts = get_cuts(a, b, c, p_ab, p_bc, p_ca, l);
                 if (!vec::check_collision(cuts[0], cuts[1], cuts[2], cuts[3]) &&
                     !vec::check_collision(cuts[0], cuts[1], cuts[4], cuts[5]) &&
                     !vec::check_collision(cuts[2], cuts[3], cuts[4], cuts[5])) {
-                    points = {p_ab, p_bc, p_ca};
-                    return true;
+                    if (find_any) {
+                        points = {p_ab, p_bc, p_ca};
+                        return true;
+                    }
+                    else {
+                        already_find = true;
+                        best_ab = p_ab;
+                        best_bc = p_bc;
+                        best_ca = p_ca;
+                        best_metric = cur_metric;
+                    }
                 }
             }
         }
+    }
+    if (!find_any) {
+        points = {best_ab, best_bc, best_ca};
+        return already_find;
     }
     return false;
 }
@@ -107,14 +145,14 @@ std::vector <vec> CutBuilder::find_sol_any(vec a, vec b, vec c, long double l) {
     std::vector <vec> points;
     for (int i = 0; i < BIN_INTER; i++) {
         long double mid = (le + ri) / 2;
-        if (check_any(a, b, c, mid, points)) {
+        if (check_any(a, b, c, mid, points, true)) {
             le = mid;
         }
         else {
             ri = mid;
         }
     }
-    check_any(a, b, c, le, points);
+    check_any(a, b, c, le, points, false);
     points = get_cuts(a, b, c, points[0], points[1], points[2], l);
     return points;
 }
