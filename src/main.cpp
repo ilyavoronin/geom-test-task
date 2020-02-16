@@ -13,10 +13,11 @@ int main() {
     long double l;
     std::cin >> a >> b >> c;
     std::cin >> l;
+    l /= 2;
     long double side_size = (b - a).mod();
     CutBuilder cutBuilder;
     if (fabs((b - c).mod() - side_size) < 0.1 && fabs((c - a).mod() - side_size) < 0.1) {
-        //this branch is for triangles with equal size
+        //this branch is for triangles with equal sides
         if (!cutBuilder.check_equal(a, b, c, l)) {
             std::cout << "Impossible\n";
             return 0;
