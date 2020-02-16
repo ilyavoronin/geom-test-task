@@ -9,24 +9,19 @@ bool CutBuilder::check_equal(vec a, vec b, vec c, long double l) {
 
 //we want to find 'beautiful' solution
 std::vector <vec> CutBuilder::find_sol_equal(vec a, vec b, vec c, long double l) {
-    long double le = l / tan(PI / 3);
-    long double ri = (b - a).mod() / 2;
-    vec p1, p2, p3, p4, p5, p6;
-    while (ri - le > vec::eps) {
-        p1 = (a + (b - a).norm() * ri) + (a - b).ortnorm() * l;
-        p2 = (a + (b - a).norm() * ri) - (a - b).ortnorm() * l;
-        p3 = (b + (c - b).norm() * ri) + (c - b).ortnorm() * l;
-        p4 = (b + (c - b).norm() * ri) - (c - b).ortnorm() * l;
-        p5 = (c + (a - c).norm() * ri) + (a - c).ortnorm() * l;
-        p6 = (c + (a - c).norm() * ri) - (a - c).ortnorm() * l;
-        if (!vec::check_collision(p1, p2, p3, p4) &&
-            !vec::check_collision(p3, p4, p5, p6) &&
-            !vec::check_collision(p5, p6, p1, p2)) {
-            return {p1, p2, p3, p4, p5, p6};
-        }
-        ri = (le + ri) / 2;
+    long double maxl = (b - a).mod() / (1 / sin(PI/3) + 1 / tan(PI/3));
+    long double beg = maxl / sin(PI / 3) + vec::eps;
+    vec p1 = (a + (b - a).norm() * beg) + (a - b).ortnorm() * l;
+    vec p2 = (a + (b - a).norm() * beg) - (a - b).ortnorm() * l;
+    vec p3 = (b + (c - b).norm() * beg) + (c - b).ortnorm() * l;
+    vec p4 = (b + (c - b).norm() * beg) - (c - b).ortnorm() * l;
+    vec p5 = (c + (a - c).norm() * beg) + (a - c).ortnorm() * l;
+    vec p6 = (c + (a - c).norm() * beg) - (a - c).ortnorm() * l;
+    if (!vec::check_collision(p1, p2, p3, p4) &&
+        !vec::check_collision(p3, p4, p5, p6) &&
+        !vec::check_collision(p5, p6, p1, p2)) {
+        return {p1, p2, p3, p4, p5, p6};
     }
-    return {p1, p2, p3, p4, p5, p6};
 }
 
 std::vector <vec> CutBuilder::get_cuts(vec a, vec b, vec c, vec p_ab, vec p_bc, vec p_ca, long double l) {

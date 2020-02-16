@@ -144,9 +144,6 @@ TEST(CutBuilderAny, testFindSolutionObtuseA) {
     ASSERT_TRUE(CutBuilder().check_any(a, b, c, l, p));
 
     p = CutBuilder().find_sol_any(a, b, c, l);
-    double d1 = vec::dist(p[0], p[1]);
-    double d2 = vec::dist(p[2], p[3]);
-    double d3 = vec::dist(p[4], p[5]);
     ASSERT_TRUE(check_size(p, l));
     ASSERT_FALSE(check_collisions(p));
     ASSERT_FALSE(check_collisions_sides(p, a, b, c));
