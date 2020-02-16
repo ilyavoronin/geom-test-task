@@ -1,11 +1,14 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <iomanip>
 
 #include "vec.h"
 #include "CutBuilder.h"
 
 int main() {
+    std::cout << std::setprecision(11);
+    std::cout << std::fixed;
     vec a, b, c;
     long double l;
     std::cin >> a >> b >> c;
@@ -13,6 +16,7 @@ int main() {
     long double side_size = (b - a).mod();
     CutBuilder cutBuilder;
     if (fabs((b - c).mod() - side_size) < 0.1 && fabs((c - a).mod() - side_size) < 0.1) {
+        //this branch is for triangles with equal size
         if (!cutBuilder.check_equal(a, b, c, l)) {
             std::cout << "Impossible\n";
             return 0;

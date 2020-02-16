@@ -20,7 +20,7 @@ private:
 
     const long double PI = M_PI;
     const int ITER = 100;
-    const int BIN_INTER = 5;
+    const int BIN_INTER = 10;
 };
 
 
